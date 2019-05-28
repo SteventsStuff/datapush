@@ -1,6 +1,6 @@
-# from datapush_api.resource.api_v1 import app
-# from datapush_api.views import register_on_sda
-# from datapush_api.config import Config
+from datapush_api.api_v1 import app
+from datapush_api.domain.basic_routes import register_on_sda
+from datapush_api.config import Config
 
 
 if __name__ == "__main__":

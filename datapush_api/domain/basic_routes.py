@@ -38,34 +38,7 @@ async def get_service_socket(service_name):
 
 
 """
-class BaseDomain:
 
-    def __init__(self, url):
-        self.url = url
-
-    async def create_instances(self):
-        pass
-
-    async def update_instances(self):
-        pass
-
-    async def delete_instances(self):
-        pass
-
-    async def get_instances(self):
-        pass
-
-    async def create_instance_bulk(self):
-        pass
-
-    async def update_instance_by_params(self):
-        pass
-
-    async def delete_multiple_instances(self):
-        pass
-
-    async def get_instance_by_key(self):
-        pass
 
 
 class ContractDomain(BaseDomain):
