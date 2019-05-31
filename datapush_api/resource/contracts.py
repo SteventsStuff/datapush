@@ -16,17 +16,13 @@ class Contracts(HTTPMethodView):
     async def get(self, request):
         service_endpoint = await parse_url(request.url)
         service_url = await get_service_socket(CONTRACTS_APP_NAME)
-        # service_url = "http://127.0.0.1:5000/"  # for home tests
-        # print(service_url)
+
         if service_url in SDA_UNREGISTERED_SERVICES_LIST:
             msg = f"Sorry, can not connect to '{CONTRACTS_APP_NAME.upper()}'"
             return text(msg)
         else:
             params = await restructure_params(request.args)
             is_params_valid, validator_message = await validate_params(params)
-
-            # print("flag", is_params_valid)
-            # print("msg", validator_message)
 
             if is_params_valid:
                 if service_endpoint[:2] == "id":

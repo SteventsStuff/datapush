@@ -10,8 +10,6 @@ class BaseDomain:
         self.params = params
 
     async def get_instances(self):
-        # print("params", self.params)
-
         async with aiohttp.request(
             method="GET", url=self.url, params=self.params
         ) as service_response:
@@ -24,7 +22,7 @@ class BaseDomain:
         else:
             msg = "Can not make request, service is unavailable now"
             logging.error(msg)
-            return json({"Error": msg})
+            return text(f"Error: {msg}")
 
     async def get_instance_by_key(self):
         if len(self.params.keys()) == 1 and list(self.params.keys())[0] == "id":
