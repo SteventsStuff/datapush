@@ -10,7 +10,7 @@ class BaseDomain:
         self.params = params
 
     async def get_instances(self):
-        print("params", self.params)
+        # print("params", self.params)
 
         async with aiohttp.request(
             method="GET", url=self.url, params=self.params
