@@ -1,6 +1,8 @@
 from datapush_api.constants import ALL_POSSIBLE_PARAMS_LIST
 from dateutil.parser import parse
 
+"""add validation for EMPTY parameter"""
+
 
 async def check_id(ids_list):
     is_valid = True

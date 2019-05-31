@@ -20,10 +20,10 @@ app.add_route(Smoke.as_view(), "/smoke")
 # contracts
 app.add_route(Contracts.as_view(), "/contracts")
 app.add_route(Contracts.as_view(), "/contracts/id")
-app.add_route(Contracts.as_view(), "/contracts/filter")
-app.add_route(Contracts.as_view(), "/contracts/payments")
+app.add_route(Contracts.as_view(), "/contracts/filter")  # approve this query with contracts
+app.add_route(Contracts.as_view(), "/contracts/payments")  # approve this query with contracts
 # payments
 app.add_route(Payments.as_view(), "/payments")
 app.add_route(Payments.as_view(), "/payments/id")
-app.add_route(Payments.as_view(), "/payments/filter")
-app.add_route(Payments.as_view(), "/payments/contracts")
+app.add_route(Payments.as_view(), "/payments/filter")  # approve this query with paymetns
+app.add_route(Payments.as_view(), "/payments/contracts")  # approve this query with paymetns

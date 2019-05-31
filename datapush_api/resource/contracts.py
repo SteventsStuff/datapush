@@ -30,19 +30,19 @@ class Contracts(HTTPMethodView):
 
             if is_params_valid:
                 if service_endpoint[:2] == "id":
-                    service_url += "id"
+                    service_url += "/id"
                     result = await ContractDomain(
                         url=service_url, params=params
                     ).get_instance_by_key()
 
                 elif service_endpoint[:6] == "filter":
-                    service_url += "filter"
+                    service_url += "/filter"
                     result = await ContractDomain(
                         url=service_url, params=params
                     ).get_instances_by_filters()
 
                 elif service_endpoint[:8] == "payments":
-                    service_url += "payments"
+                    service_url += "/payments"
                     result = await ContractDomain(
                         url=service_url, params=params
                     ).get_contracts_payments()
