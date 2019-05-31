@@ -20,6 +20,7 @@ async def register_on_sda(request):
 
 
 async def get_service_socket(service_name):
+    """need to check sda_response!!! on 200"""
     service_socket = []
     sda_address = f"{SDA_ADDRESS}/{service_name}"
 
@@ -48,31 +49,3 @@ async def restructure_params(args):
     for key in args:
         params[key] = args[key][0]
     return params
-
-
-async def validate_contacts_params(params):
-    """
-    {
-        "executor": "Electricite de France",
-        "end_date": "2013-01-20",
-        "customer": "Costco",
-        "title": "Contract-211",
-        "id": "ddbd1840-fb63-41e0-b830-802bcf4f356d",
-        "start_date": "2012-02-05",
-        "amount": 52200
-    }
-    """
-    pass
-
-
-async def validate_payments_params(params):
-    """
-    {
-        "id": "ddbd1840-fb63-41e0-b830-802bcf4f356d",
-        "contributor": "d9999999",
-        "amount": 31.55,
-        "date": "2019-05-04T05:34:05.287928-04:00",
-        "contract_id": "0d571478-0953-4a20-a9f5-506974999228"
-    }
-    """
-    pass

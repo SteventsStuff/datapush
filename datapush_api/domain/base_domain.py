@@ -1,7 +1,7 @@
 from sanic.response import json
 from http import HTTPStatus
 import aiohttp
-import logging
+import logging  # i will make full log config later
 
 
 class BaseDomain:
@@ -9,26 +9,34 @@ class BaseDomain:
         self.url = url
         self.params = params
 
-    async def get_instances(self, request):
-        try:
-            async with aiohttp.request(
-                    method="GET",
-                    url=self.url,
-                    params=self.params
-            ) as service_response:
-                result = await service_response.json()
+    async def get_instances(self):
+        async with aiohttp.request(
+            method="GET", url=self.url, params=self.params
+        ) as service_response:
+            result = await service_response.json()
 
-        except Exception as exc:  # do it this way is not your bro!
-            logging.error(exc)
-            return json({"Error": "Server is unavailable now"})
+        if service_response.status == HTTPStatus.OK:
+            msg = f"Operation successful"
+            logging.info(msg)
+            return json(result)
         else:
-            if service_response.status == HTTPStatus.OK:
-                return json(result)
-            else:
-                pass
+            msg = "Can not get contracts, service is unavailable now"
+            logging.error(msg)
+            return json({"Error": msg})
 
-    async def get_instance_by_key(self, request):
+    async def get_instance_by_key(self):
         pass
+        # self.params = new_shit
+        # return await self.get_instances()
 
-    async def get_instances_by_filters(self, request):
+        """async with aiohttp.request(
+            method="GET", url=self.url, params=self.params
+        ) as service_response:
+            result = await service_response.json()
+
+        if service_response.status == HTTPStatus.OK:
+            pass
+          #  logging
+        """
+    async def get_instances_by_filters(self):
         pass
