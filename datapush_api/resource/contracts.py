@@ -1,8 +1,10 @@
 from sanic.views import HTTPMethodView
 from sanic.response import text
 from datapush_api.domain.contracts import ContractDomain
-from datapush_api.constants import CONTRACTS_APP_NAME, SDA_UNREGISTERED_SERVICES_LIST
-from datapush_api.basic_validator import validate_params
+from datapush_api.constants import (
+    CONTRACTS_APP_NAME, SDA_UNREGISTERED_SERVICES_LIST
+)
+from datapush_api.domain.basic_validator import validate_params
 from datapush_api.domain.basic_views import (
     parse_url,
     restructure_params,
@@ -15,9 +17,9 @@ class Contracts(HTTPMethodView):
         service_endpoint = await parse_url(request.url)
         service_url = await get_service_socket(CONTRACTS_APP_NAME)
         # service_url = "http://127.0.0.1:5000/"  # for home tests
-
+        # print(service_url)
         if service_url in SDA_UNREGISTERED_SERVICES_LIST:
-            msg = f"Sorry, service '{CONTRACTS_APP_NAME.upper()}' is not working now..."
+            msg = f"Sorry, can not connect to '{CONTRACTS_APP_NAME.upper()}'"
             return text(msg)
         else:
             params = await restructure_params(request.args)

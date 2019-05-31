@@ -1,4 +1,4 @@
-from sanic.response import json
+from sanic.response import json, text
 from http import HTTPStatus
 import aiohttp
 import logging  # i will make full log config later
@@ -10,6 +10,8 @@ class BaseDomain:
         self.params = params
 
     async def get_instances(self):
+        print("params", self.params)
+
         async with aiohttp.request(
             method="GET", url=self.url, params=self.params
         ) as service_response:
@@ -20,23 +22,15 @@ class BaseDomain:
             logging.info(msg)
             return json(result)
         else:
-            msg = "Can not get contracts, service is unavailable now"
+            msg = "Can not make request, service is unavailable now"
             logging.error(msg)
             return json({"Error": msg})
 
     async def get_instance_by_key(self):
-        pass
-        # self.params = new_shit
-        # return await self.get_instances()
+        if len(self.params.keys()) == 1 and list(self.params.keys())[0] == "id":
+            return await self.get_instances()
+        else:
+            return text("You must use only ID parameter!")
 
-        """async with aiohttp.request(
-            method="GET", url=self.url, params=self.params
-        ) as service_response:
-            result = await service_response.json()
-
-        if service_response.status == HTTPStatus.OK:
-            pass
-          #  logging
-        """
     async def get_instances_by_filters(self):
         pass
