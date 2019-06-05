@@ -2,20 +2,12 @@ from marshmallow import Schema, fields, validates, validate, ValidationError
 
 
 class BandPaymentsSchema(Schema):
-    id = fields.UUID(
-        validate=validate.Length(
-            min=36, max=36, error="String must be 36 chars"
-        )
-    )
-    contract_id = fields.UUID(
-        validate=validate.Length(
-            min=36, max=36, error="String must be 36 chars"
-        )
-    )
+    id = fields.UUID()
+    contract_id = fields.UUID()
     contributor = fields.String(
         validate=validate.Length(min=1, error="String too short")
     )
-    date = fields.DateTime()
+    date = fields.LocalDateTime()
     amount = fields.Float()
 
     @validates("amount")

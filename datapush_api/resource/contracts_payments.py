@@ -1,7 +1,7 @@
 from sanic.views import HTTPMethodView
 from sanic.response import text
 from datapush_api.domain.contracts_payments import general_request
-# from datapush_api.validator_old import validate_params
+from datapush_api.validation.validator import validate_params
 from datapush_api.constants import (
     PAYMENTS_APP_NAME, CONTRACTS_APP_NAME, SDA_UNREGISTERED_SERVICES_LIST
 )
@@ -23,7 +23,9 @@ class ContractsPayments(HTTPMethodView):
             return text(msg)
         else:
             params = await restructure_params(request.args)
-            is_params_valid, validator_message = await validate_params(params)
+            is_params_valid, validator_message = await validate_params(
+                params, CONTRACTS_APP_NAME
+            )
 
             if is_params_valid:
                 # mb we will add one more param "file" for user to choose
