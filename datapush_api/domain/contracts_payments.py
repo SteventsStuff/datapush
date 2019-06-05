@@ -1,5 +1,5 @@
-from sanic.response import json
-from sanic.response import file
+import fpdf
+from sanic import response
 from datapush_api.domain.payments import PaymentsDomain
 from datapush_api.domain.contracts import ContractDomain
 import json as non_sanic_json
@@ -23,19 +23,64 @@ async def general_request(contracts_url, payments_url, params):
         res_contracts.body.decode("utf-8")
     )
 
-    # file = open("contracts_and_payments.csv", "w")
-    # csvwriter = csv.writer(file)
-    # count = 0
-    #
-    # for i in facts_and_dimensions["facts"][0]:
-    #     if count == 0:
-    #         header = i.keys()
-    #         csvwriter.writerow(header)
-    #         count += 1
-    #
-    #     csvwriter.writerow(i.values())
-    # file.close()
+    result = response.json(facts_and_dimensions)
 
-    return json(facts_and_dimensions)
-    # from sanic import response
-    # return await response.file('contracts_and_payments.csv')
+    return result
+
+
+async def create_cvs_file(facts_and_dimensions):
+    filename = "contracts_and_payments.csv"
+    file = open(filename, 'w')
+    csvwriter = csv.writer(file, delimiter=';')
+    count = 0
+
+    for fact in facts_and_dimensions["facts"][0]:
+        if count == 0:
+            header = fact.keys()
+            csvwriter.writerow(header)
+            count += 1
+
+        csvwriter.writerow(fact.values())
+    count = 0
+
+    for dim in facts_and_dimensions["dimensions"][0]:
+        if count == 0:
+            header = dim.keys()
+            csvwriter.writerow(header)
+            count += 1
+
+        csvwriter.writerow(dim.values())
+
+    file.close()
+
+    return await response.file(file)
+
+
+async def create_pdf_file(facts_and_dimensions):
+    filename = "contracts_and_payments.pdf"
+    pdf = fpdf.FPDF()
+    pdf.set_font("Arial", size=12)
+    pdf.add_page()
+    col_width = pdf.w / 2.5
+    row_height = pdf.font_size
+    pdf.cell(200, 10, txt="Facts", ln=1, align="L")
+
+    for fact in facts_and_dimensions["facts"][0]:
+        for header in fact.keys():
+            pdf.cell(pdf.w / 4.5, row_height, txt=header, border=1)
+            pdf.cell(col_width, row_height, txt=str(fact[header]), border=1)
+            pdf.ln(row_height)
+
+        pdf.cell(200, 10, txt=" ", ln=1)
+
+    pdf.cell(200, 10, txt="Dimensions", ln=1, align="L")
+
+    for dim in facts_and_dimensions["dimensions"][0]:
+        for header in dim.keys():
+            pdf.cell(pdf.w / 4.5, row_height, txt=header, border=1)
+            pdf.cell(col_width, row_height, txt=str(dim[header]), border=1)
+            pdf.ln(row_height)
+
+        pdf.cell(200, 10, txt=" ", ln=1)
+
+    return await response.file(pdf.output(filename))

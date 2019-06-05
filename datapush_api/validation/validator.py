@@ -52,7 +52,7 @@ async def validate_params(params_dict, service_name):
         return is_valid, validator_msg
     else:
         if "filter" not in list(params_dict.keys()) \
-                or len(params_dict.keys()) > 1:
+                or len(params_dict.keys()) > 2:
             is_valid = False
             validator_msg = "Invalid format of endpoint parameters!"
             return is_valid, validator_msg

@@ -28,7 +28,7 @@ class ContractsPayments(HTTPMethodView):
             )
 
             if is_params_valid:
-                # mb we will add one more param "file" for user to choose
+                # mb we will add one more param "output" for user to choose
                 # type of data for output (json, csv, pdf)
                 payments_service_url += "/contract"
                 if len(params.keys()) == 1 and list(params.keys())[0] == "id":
