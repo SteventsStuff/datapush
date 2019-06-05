@@ -25,6 +25,14 @@ async def general_request(contracts_url, payments_url, params):
 
     result = response.json(facts_and_dimensions)
 
+    if "output" in list(params.keys()):
+        if params["output"].lower() == "json":
+            result = response.json(facts_and_dimensions)
+        elif params["output"].lower() == "csv":
+            result = await create_cvs_file(facts_and_dimensions)
+        elif params["output"].lower() == "pdf":
+            result = await create_pdf_file(facts_and_dimensions)
+
     return result
 
 
