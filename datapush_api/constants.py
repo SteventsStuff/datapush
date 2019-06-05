@@ -9,8 +9,7 @@ PAYMENTS_APP_NAME = "payments"
 SDA_UNREGISTERED_SERVICES_LIST = ["/datapush", "/contracts", "/payments"]
 SDA_ADDRESS = f"http://{Config.SDA_HOST}:{Config.SDA_PORT}"
 REGISTRATION_URL = f"""{SDA_ADDRESS}/?name={DEFAULT_SERVICE_NAME}&ip={Config.SDA_CONNECT}&port={Config.SERVICE_PORT}"""
-# fields for validators
-ALL_POSSIBLE_PARAMS_LIST = [
-    "id", "contract_id", "start_date", "end_date", "date", "title",
-    "customer", "executor", "contributor", "amount"
+# for validation
+ALL_POSSIBLE_OPERATORS = [
+    " eq ", " ne ", " ge ", " gt ", " le ", " lt ", " in "
 ]

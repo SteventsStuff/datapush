@@ -1,11 +1,11 @@
 from sanic.views import HTTPMethodView
 from sanic.response import text
 from datapush_api.domain.contracts_payments import general_request
-from datapush_api.domain.basic_validator import validate_params
+# from datapush_api.validator_old import validate_params
 from datapush_api.constants import (
     PAYMENTS_APP_NAME, CONTRACTS_APP_NAME, SDA_UNREGISTERED_SERVICES_LIST
 )
-from datapush_api.domain.basic_views import (
+from datapush_api.basic_views import (
     restructure_params, get_service_socket
 )
 

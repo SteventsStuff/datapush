@@ -4,8 +4,8 @@ from datapush_api.domain.payments import PaymentsDomain
 from datapush_api.constants import (
     PAYMENTS_APP_NAME, SDA_UNREGISTERED_SERVICES_LIST
 )
-from datapush_api.domain.basic_validator import validate_params
-from datapush_api.domain.basic_views import (
+from datapush_api.validation.validator import validate_params
+from datapush_api.basic_views import (
     parse_url,
     restructure_params,
     get_service_socket
@@ -22,7 +22,9 @@ class Payments(HTTPMethodView):
             return text(msg)
         else:
             params = await restructure_params(request.args)
-            is_params_valid, validator_message = await validate_params(params)
+            is_params_valid, validator_message = await validate_params(
+                params, PAYMENTS_APP_NAME
+            )
 
             if is_params_valid:
                 if service_endpoint[:2] == "id":

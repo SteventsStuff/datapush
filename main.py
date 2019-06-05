@@ -1,5 +1,5 @@
 from datapush_api.api_v1 import app
-from datapush_api.domain.basic_views import register_on_sda
+from datapush_api.basic_views import register_on_sda
 from datapush_api.config import Config
 
 
