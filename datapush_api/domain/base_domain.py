@@ -7,12 +7,12 @@ import logging  # i will make full log config later
 class BaseDomain:
     def __init__(self, url, params=None):
         self.url = url
-        self.params = params
 
     async def get_instances(self):
         async with aiohttp.request(
-            method="GET", url=self.url, params=self.params
+                method="GET", url=self.url
         ) as service_response:
+            print(await service_response.json())
             result = await service_response.json()
 
         if service_response.status == HTTPStatus.OK:
@@ -25,10 +25,11 @@ class BaseDomain:
             return text(f"Error: {msg}")
 
     async def get_instance_by_key(self):
-        if len(self.params.keys()) == 1 and list(self.params.keys())[0] == "id":
-            return await self.get_instances()
-        else:
-            return text("You must use only ID parameter!")
+        pass
+        # if len(self.params.keys()) == 1 and list(self.params.keys())[0] == "id":
+        #     return await self.get_instances()
+        # else:
+        #     return text("You must use only ID parameter!")
 
     async def get_instances_by_filters(self):
         pass

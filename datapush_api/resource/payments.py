@@ -2,7 +2,7 @@ from sanic.views import HTTPMethodView
 from sanic.response import text
 from datapush_api.domain.payments import PaymentsDomain
 from datapush_api.constants import (
-    PAYMENTS_APP_NAME, SDA_UNREGISTERED_SERVICES_LIST
+    PAYMENTS_APP_NAME, SDA_UNREGISTERED_SERVICES_LIST, SERVICE_URL
 )
 from datapush_api.validation.validator import validate_params
 from datapush_api.basic_views import (
@@ -14,8 +14,10 @@ from datapush_api.basic_views import (
 
 class Payments(HTTPMethodView):
     async def get(self, request):
+        print("ashasdjkasd", request.url)
         service_endpoint = await parse_url(request.url)
         service_url = await get_service_socket(PAYMENTS_APP_NAME)
+        print(service_url)
 
         if service_url in SDA_UNREGISTERED_SERVICES_LIST:
             msg = f"Sorry, can not connect to '{PAYMENTS_APP_NAME.upper()}'"
@@ -32,13 +34,6 @@ class Payments(HTTPMethodView):
                     result = await PaymentsDomain(
                         url=service_url, params=params
                     ).get_instance_by_key()
-
-                elif service_endpoint[:6] == "filter":
-                    service_url += "/filter"
-                    result = await PaymentsDomain(
-                        url=service_url, params=params
-                    ).get_instances_by_filters()
-
                 elif service_endpoint[:9] == "contracts":
                     service_url += "/contract"
                     result = await PaymentsDomain(
@@ -46,6 +41,9 @@ class Payments(HTTPMethodView):
                     ).get_instance_by_key()
 
                 else:
+                    print(SERVICE_URL)
+                    service_url += request.url[len(SERVICE_URL):]
+                    print(service_url)
                     result = await PaymentsDomain(
                         url=service_url, params=params
                     ).get_instances()

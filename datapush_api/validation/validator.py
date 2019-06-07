@@ -37,7 +37,6 @@ async def create_dict_for_validation(params_list):
                 dicts_list.append(dict_for_validation)
                 dict_for_validation = {}
 
-    print("dicts_list", dicts_list)
     return dicts_list
 
 
@@ -60,6 +59,7 @@ async def validate_params(params_dict, service_name):
         params_list = await strip_params(params_dict)
         print("params_list", params_list)
         parsed_data_list = await create_dict_for_validation(params_list)
+        print("parsed_data_list", parsed_data_list)
 
         if service_name == CONTRACTS_APP_NAME:
             try:

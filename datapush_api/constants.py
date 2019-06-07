@@ -13,3 +13,5 @@ REGISTRATION_URL = f"""{SDA_ADDRESS}/?name={DEFAULT_SERVICE_NAME}&ip={Config.SDA
 ALL_POSSIBLE_OPERATORS = [
     " eq ", " ne ", " ge ", " gt ", " le ", " lt ", " in "
 ]
+# service url
+SERVICE_URL = f"http://127.0.0.1:{Config.SERVICE_PORT}"

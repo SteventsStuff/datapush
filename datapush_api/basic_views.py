@@ -50,7 +50,7 @@ async def get_service_socket(service_name):
                 service_socket.append(raw_ip_port_list[0][2:-1])
                 service_socket.append(raw_ip_port_list[1][2:-2])
 
-                url = f"http://{service_socket[0]}:{service_socket[1]}/{service_name}"
+                url = f"http://{service_socket[0]}:{service_socket[1]}"
                 return url
         else:  # need to check this  error
             msg = f"Can not get {service_name} socket!"
