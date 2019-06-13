@@ -5,10 +5,13 @@ from marshmallow import ValidationError
 
 
 async def strip_params(params_dict):
+    print("\nin func strip_params")
+    print("params_dict", params_dict)
     params_list = []
     for param in params_dict["filter"].split("and"):
         params_list.append(param.strip())
 
+    print()
     return params_list
 
 
@@ -17,6 +20,7 @@ async def create_dict_for_validation(params_list):
     dicts_list = []
 
     for param in params_list:
+        # print("current param", param)
         for operator in ALL_POSSIBLE_OPERATORS:
             if operator in param and operator == " in ":
                 field_name = param.split(operator)[0]
@@ -25,23 +29,30 @@ async def create_dict_for_validation(params_list):
                 values_list = values_str.split(",")
 
                 for value in values_list:
+                    # print("param", param)
                     dict_for_validation[field_name] = value
                     dicts_list.append(dict_for_validation)
                     dict_for_validation = {}
+                    # print("dict_for_validation", dict_for_validation)
+                    # print("dicts_list", dicts_list)
 
             elif operator in param:
+                # print("param in 'if' operator", param)
                 field_name = param.split(operator)[0]
                 value = param.split(operator)[1]
 
                 dict_for_validation[field_name] = value
                 dicts_list.append(dict_for_validation)
+                # print("dict_for_validation", dict_for_validation)
+                # print("dicts_list", dicts_list)
+
                 dict_for_validation = {}
 
     return dicts_list
 
 
 async def validate_params(params_dict, service_name):
-    # print("params:", params_dict)
+    print("params:", params_dict)
 
     is_valid = True
     validator_msg = ""
@@ -50,8 +61,7 @@ async def validate_params(params_dict, service_name):
         is_valid = True
         return is_valid, validator_msg
     else:
-        if "filter" not in list(params_dict.keys()) \
-                or len(params_dict.keys()) > 2:
+        if "filter" not in list(params_dict.keys()):
             is_valid = False
             validator_msg = "Invalid format of endpoint parameters!"
             return is_valid, validator_msg

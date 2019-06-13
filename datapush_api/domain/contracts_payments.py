@@ -1,7 +1,6 @@
 import fpdf
 from sanic import response
-from datapush_api.domain.payments import PaymentsDomain
-from datapush_api.domain.contracts import ContractDomain
+from datapush_api.domain.base_domain import BaseDomain
 import json as non_sanic_json
 import csv
 
@@ -9,12 +8,8 @@ import csv
 async def general_request(contracts_url, payments_url, params):
     facts_and_dimensions = dict()
 
-    res_contracts = await ContractDomain(
-        url=contracts_url, params=params
-    ).get_instances()
-    res_payments = await PaymentsDomain(
-        url=payments_url, params=params
-    ).get_instance_by_key()
+    res_contracts = await BaseDomain(url=contracts_url).get_instances()
+    res_payments = await BaseDomain(url=payments_url).get_instance_by_key()
 
     facts_and_dimensions["facts"] = non_sanic_json.loads(
         res_payments.body.decode("utf-8")

@@ -1,4 +1,3 @@
-from sanic.response import text
 from datapush_api.constants import *
 from http import HTTPStatus
 import aiohttp
@@ -38,10 +37,11 @@ async def get_service_socket(service_name):
         if sda_response.status == HTTPStatus.OK:
             decoded_response = await sda_response.text()
             raw_ip_port_list = decoded_response.split(",")
-            if raw_ip_port_list[0] in SDA_UNREGISTERED_SERVICES_LIST:
-                msg = f"Can not get {service_name} socket!"
-                logging.error(msg)
+            # print("raw_ip_port_list", raw_ip_port_list)
 
+            if raw_ip_port_list[0] in SDA_UNREGISTERED_SERVICES_LIST:
+                msg = f"Service {service_name} is unavailable"
+                logging.error(msg)
                 return f"/{service_name}"
             else:
                 msg = f"Operation successful"
@@ -52,14 +52,10 @@ async def get_service_socket(service_name):
 
                 url = f"http://{service_socket[0]}:{service_socket[1]}"
                 return url
-        else:  # need to check this  error
-            msg = f"Can not get {service_name} socket!"
-            logging.error(msg)
-            return text(f"Error: {msg}")
 
-
-async def parse_url(url):
-    return url[url.rfind("/") + 1:]
+        msg = f"SDA is unavailable"
+        logging.error(msg)
+        return f"/{service_name}"
 
 
 async def restructure_params(args):

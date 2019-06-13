@@ -5,7 +5,7 @@ import logging  # i will make full log config later
 
 
 class BaseDomain:
-    def __init__(self, url, params=None):
+    def __init__(self, url):
         self.url = url
 
     async def get_instances(self):
@@ -24,12 +24,3 @@ class BaseDomain:
             logging.error(msg)
             return text(f"Error: {msg}")
 
-    async def get_instance_by_key(self):
-        pass
-        # if len(self.params.keys()) == 1 and list(self.params.keys())[0] == "id":
-        #     return await self.get_instances()
-        # else:
-        #     return text("You must use only ID parameter!")
-
-    async def get_instances_by_filters(self):
-        pass

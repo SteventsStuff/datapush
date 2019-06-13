@@ -19,9 +19,9 @@ app.add_route(Smoke.as_view(), "/smoke")
 app.add_route(ContractsPayments.as_view(), '/contracts-payments')
 # contracts
 app.add_route(Contracts.as_view(), "/contracts")
-app.add_route(Contracts.as_view(), "/contracts/id")
+app.add_route(Contracts.as_view(), "/contracts/<contract_id>")
 app.add_route(Contracts.as_view(), "/contracts/payments")
 # payments
 app.add_route(Payments.as_view(), "/payments")
-app.add_route(Payments.as_view(), "/payments/id")
+app.add_route(Payments.as_view(), "/payments/<payment_id>")
 app.add_route(Payments.as_view(), "/payments/contracts")

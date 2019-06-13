@@ -14,4 +14,4 @@ ALL_POSSIBLE_OPERATORS = [
     " eq ", " ne ", " ge ", " gt ", " le ", " lt ", " in "
 ]
 # service url
-SERVICE_URL = f"http://127.0.0.1:{Config.SERVICE_PORT}"
+# SERVICE_URL = f"http://127.0.0.1:{Config.SERVICE_PORT}"
