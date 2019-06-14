@@ -12,8 +12,8 @@ class BandContractsSchema(Schema):
     executor = fields.String(
         validate=validate.Length(min=1, error="String too short")
     )
-    start_date = fields.DateTime()
-    end_date = fields.DateTime()
+    start_date = fields.Date()
+    end_date = fields.Date()
     amount = fields.Float()
 
     @validates("amount")

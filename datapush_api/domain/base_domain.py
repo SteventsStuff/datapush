@@ -1,4 +1,4 @@
-from sanic.response import json, text
+from sanic.response import json
 from http import HTTPStatus
 import aiohttp
 import logging  # i will make full log config later
@@ -12,15 +12,18 @@ class BaseDomain:
         async with aiohttp.request(
                 method="GET", url=self.url
         ) as service_response:
-            print(await service_response.json())
-            result = await service_response.json()
-
-        if service_response.status == HTTPStatus.OK:
-            msg = f"Operation successful"
-            logging.info(msg)
-            return json(result)
-        else:
-            msg = "Can not make request, service is unavailable now"
-            logging.error(msg)
-            return text(f"Error: {msg}")
-
+            try:
+                result = await service_response.json()
+            except Exception as exc:
+                logging.error(exc)
+                msg = "Got invalid type of response!"
+                return json(f"Error: {msg}")
+            else:
+                if service_response.status == HTTPStatus.OK:
+                    msg = f"Operation successful"
+                    logging.info(msg)
+                    return json(result)
+                else:
+                    msg = "Can not make request, service is unavailable now"
+                    logging.error(msg)
+                    return json(f"Error: {msg}")

@@ -12,7 +12,7 @@ from datapush_api.basic_views import (
 
 
 class Payments(HTTPMethodView):
-    async def get(self, request, payment_id):
+    async def get(self, request, payment_id=None):
         # print("payment_id", payment_id)  # check it with Dima
         # print("request.url", request.url)
         service_url = await get_service_socket(PAYMENTS_APP_NAME)

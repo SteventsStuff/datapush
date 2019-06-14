@@ -12,7 +12,7 @@ from datapush_api.basic_views import (
 
 
 class Contracts(HTTPMethodView):
-    async def get(self, request, contract_id):
+    async def get(self, request, contract_id=None):
         # print("payment_id", payment_id)  # check it with Contracts service
         # print("request.url", request.url)
         service_url = await get_service_socket(CONTRACTS_APP_NAME)

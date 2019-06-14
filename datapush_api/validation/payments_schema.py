@@ -7,7 +7,7 @@ class BandPaymentsSchema(Schema):
     contributor = fields.String(
         validate=validate.Length(min=1, error="String too short")
     )
-    date = fields.LocalDateTime()
+    date = fields.Date()
     amount = fields.Float()
 
     @validates("amount")
