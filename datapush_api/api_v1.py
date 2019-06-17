@@ -20,7 +20,7 @@ app.add_route(ContractsPayments.as_view(), '/contracts-payments')
 # contracts
 app.add_route(Contracts.as_view(), "/contracts")
 app.add_route(Contracts.as_view(), "/contract/<contract_id>")
-app.add_route(Contracts.as_view(), "/contracts/payments")
+app.add_route(Contracts.as_view(), "/payments_by_contracts/<contracts_ids_list>")
 # payments
 app.add_route(Payments.as_view(), "/payments")
 app.add_route(Payments.as_view(), "/payment/<payment_id>")

@@ -7,4 +7,4 @@ class Config:
     SDA_CONNECT = socket.gethostbyname(socket.gethostname())
 
     SERVICE_HOST = "0.0.0.0"
-    SERVICE_PORT = 18000
+    SERVICE_PORT = 17000

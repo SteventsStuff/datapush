@@ -1,5 +1,5 @@
 from sanic.views import HTTPMethodView
-from sanic.response import text
+from sanic.response import json
 from datapush_api.domain.contracts_payments import general_request
 from datapush_api.validation.validator import validate_params
 from datapush_api.constants import (
@@ -12,33 +12,30 @@ from datapush_api.basic_views import (
 
 class ContractsPayments(HTTPMethodView):
     async def get(self, request):
-        payments_service_url = await get_service_socket(PAYMENTS_APP_NAME)
-        contracts_service_url = await get_service_socket(CONTRACTS_APP_NAME)
+        service_contracts_url = await get_service_socket(CONTRACTS_APP_NAME)
+        service_payments_url = await get_service_socket(PAYMENTS_APP_NAME)
 
-        if contracts_service_url in SDA_UNREGISTERED_SERVICES_LIST:
-            msg = f"Sorry, can not connect to '{CONTRACTS_APP_NAME.upper()}'"
-            return text(msg)
-        elif payments_service_url in SDA_UNREGISTERED_SERVICES_LIST:
-            msg = f"Sorry, can not connect to '{PAYMENTS_APP_NAME.upper()}'"
-            return text(msg)
-        else:
-            params = await restructure_params(request.args)
-            is_params_valid, validator_message = await validate_params(
-                params, CONTRACTS_APP_NAME
+        if service_contracts_url in SDA_UNREGISTERED_SERVICES_LIST:
+            msg = f"Can not connect to '{CONTRACTS_APP_NAME.upper()}' service"
+            return json(msg)
+        if service_payments_url in SDA_UNREGISTERED_SERVICES_LIST:
+            msg = f"Can not connect to '{PAYMENTS_APP_NAME.upper()}' service"
+            return json(msg)
+
+        params = await restructure_params(request.args)
+        is_params_valid, validator_message = await validate_params(
+            params, CONTRACTS_APP_NAME
+        )
+
+        if is_params_valid:
+            service_contracts_url += "/contracts/" + request.url[request.url.find("/contracts-payments")+19:]
+            service_payments_url += "/payments/contracts/" + request.url[request.url.find("/contracts-payments")+19:]
+            service_payments_url = service_payments_url.replace("?filter=id", "?filter=contract_id")
+
+            result = await general_request(
+                contracts_url=service_contracts_url,
+                payments_url=service_payments_url
             )
-
-            if is_params_valid:
-                # mb we will add one more param "output" for user to choose
-                # type of data for output (json, csv, pdf)
-                payments_service_url += "/contract"
-                if len(params.keys()) == 1 and list(params.keys())[0] == "id":
-                    result = await general_request(
-                        contracts_url=contracts_service_url,
-                        payments_url=payments_service_url,
-                        params=params
-                    )
-                else:
-                    return text("You must use only ID parameter!")
-                return result
-            else:
-                return text(validator_message)
+            return result
+        else:
+            return json(validator_message)

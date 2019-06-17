@@ -1,7 +1,7 @@
 from sanic.response import json
 from http import HTTPStatus
 import aiohttp
-import logging  # i will make full log config later
+import logging
 
 
 class BaseDomain:
@@ -24,6 +24,6 @@ class BaseDomain:
                     logging.info(msg)
                     return json(result)
                 else:
-                    msg = "Can not make request, service is unavailable now"
+                    msg = f"Got {service_response.status}"
                     logging.error(msg)
                     return json(f"Error: {msg}")

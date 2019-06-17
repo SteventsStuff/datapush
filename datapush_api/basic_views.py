@@ -5,7 +5,6 @@ import logging
 
 
 async def register_on_sda(request):
-    """need to think how to make it without try/except"""
     try:
         async with aiohttp.ClientSession() as session:
             sda_response = await session.get(SDA_ADDRESS)
@@ -15,29 +14,23 @@ async def register_on_sda(request):
 
                 if sda_response.status == HTTPStatus.OK:
                     logging.info("successful registration")
-    except Exception as exc:  # ConnectionRefusedError not working??
+    except Exception as exc:  # ConnectionRefusedError not working
         logging.error(exc)
 
 
 async def get_service_socket(service_name):
-    """get {service_name} socket from SDA and return service URL
-    P.S.
-    idk for now how to evade try/except block in this situation
-    """
-
     service_socket = []
     sda_address = f"{SDA_ADDRESS}/{service_name}"
     try:
         async with aiohttp.ClientSession() as session:
             sda_response = await session.get(sda_address)
-    except Exception as exc:  # ConnectionRefusedError not working??
+    except Exception as exc:
         logging.error(exc)
         return f"/{service_name}"
     else:
         if sda_response.status == HTTPStatus.OK:
             decoded_response = await sda_response.text()
             raw_ip_port_list = decoded_response.split(",")
-            # print("raw_ip_port_list", raw_ip_port_list)
 
             if raw_ip_port_list[0] in SDA_UNREGISTERED_SERVICES_LIST:
                 msg = f"Service {service_name} is unavailable"
