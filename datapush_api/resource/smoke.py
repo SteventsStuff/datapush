@@ -1,7 +1,7 @@
 from sanic.views import HTTPMethodView
-from sanic.response import text
+from sanic.response import json
 
 
 class Smoke(HTTPMethodView):
     def get(self, request):
-        return text("Service DataPush is running!")
+        return json("Service DataPush is running!")
