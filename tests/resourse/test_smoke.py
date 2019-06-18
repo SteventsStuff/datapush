@@ -17,3 +17,7 @@ class AutoRestTests(unittest.TestCase):
 
         data = json.loads(response.text)
         self.assertEqual(data, "Service DataPush is running!")
+
+
+if __name__ == "__main__":
+    unittest.main()

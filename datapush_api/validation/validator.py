@@ -51,8 +51,6 @@ async def create_dict_for_validation(params_list):
 
 
 async def validate_params(params_dict, service_name):
-    print("params_dict", params_dict)
-    print("service_name", service_name)
     is_valid = True
     validator_msg = ""
 
@@ -66,9 +64,7 @@ async def validate_params(params_dict, service_name):
             return is_valid, validator_msg
 
         params_list = await strip_params(params_dict)
-        print("params_list", params_list)
         parsed_data_list = await create_dict_for_validation(params_list)
-        print("parsed_data_list", parsed_data_list)
 
         if service_name == CONTRACTS_APP_NAME:
             try:
@@ -84,6 +80,4 @@ async def validate_params(params_dict, service_name):
                 is_valid = False
                 validator_msg = err.messages
                 return is_valid, str(validator_msg)
-    print("is_valid", is_valid)
-    print("validator_msg", validator_msg)
     return is_valid, validator_msg
